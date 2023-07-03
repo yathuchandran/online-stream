@@ -44,7 +44,7 @@ function RowPost(props) {
       <img onClick={()=>handlemovie(obj.id)} className={props.isSmall ? 'smallPoster': 'poster'} src={`${imageUrl+obj.backdrop_path}`} alt="poster" />
       )}
     
-    
+    {/* hello */}
       </div>
      { urlId && <Youtube  videoId={urlId.key} opts={opts}  /> }
     </div>
