@@ -54,4 +54,3 @@ function RowPost(props) {
 
 export default RowPost
 
-// bsdhasfbihdgbdkjvbw
