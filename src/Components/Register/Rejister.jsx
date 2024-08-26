@@ -4,11 +4,11 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { blue } from "@mui/material/colors";
 import { getLogin } from "../../Api/Api";
-
+import Swal from 'sweetalert2';
 
 const defaultTheme = createTheme();
 
@@ -25,31 +25,46 @@ const Rejister = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     // Validate form fields
     setEmailError(!sLoginName);
     setPasswordError(!sPassword);
-    if (!sLoginName || !sPassword ) return;
+    if (!sLoginName || !sPassword) return;
+  
     try {
       handleLoaderOpen();
-     const data= {
+      const data = {
         email: sLoginName,
-        password:sPassword,
-      }
+        password: sPassword,
+      };
       const res = await getLogin(data);
-console.log(res,"res======================================");
+      
       if (res.message === "User Login Successfully") {
-        localStorage.setItem("sLoginName", JSON.stringify(sLoginName));
-        setLoginName('')
-        navigate('/');
-        
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'You will be redirected shortly.',
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          localStorage.setItem("sLoginName", JSON.stringify(sLoginName));
+          setLoginName("");
+          navigate("/");
+        });
       } else {
-        setMessage(res.message);
-        handleClick();
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: res.message,
+        });
       }
     } catch (error) {
       console.error("Login error", error.message);
-      setMessage(error.message);
-      handleClick();
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Error',
+        text: error.message,
+      });
     } finally {
       handleLoaderClose();
     }
@@ -65,19 +80,19 @@ console.log(res,"res======================================");
 
   return (
     <ThemeProvider theme={defaultTheme}>
-     <Grid
-      container
-      component="main"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      sx={{
-        backgroundImage: 'url("https://wallpapercave.com/wp/wp9424696.jpg")', // Replace with your image URL
-        backgroundSize: "cover", // Cover the entire container
-        backgroundPosition: "center", // Center the image
-        backgroundRepeat: "no-repeat", // Do not repeat the image
-      }}
-    >
+      <Grid
+        container
+        component="main"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        sx={{
+          backgroundImage: 'url("https://wallpapercave.com/wp/wp9424696.jpg")', 
+          backgroundSize: "cover", 
+          backgroundPosition: "center", 
+          backgroundRepeat: "no-repeat", 
+        }}
+      >
         <Grid
           item
           xs={12}
@@ -117,7 +132,7 @@ console.log(res,"res======================================");
                 autoComplete="email"
                 autoFocus
               />
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <TextField
                   error={passwordError}
                   onChange={(e) => setSPassword(e.target.value)}
@@ -126,25 +141,24 @@ console.log(res,"res======================================");
                   fullWidth
                   name="password"
                   label="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="current-password"
                 />
                 <div
                   onClick={() => setShowPassword(!showPassword)}
                   style={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: '10px',
-                    transform: 'translateY(-50%)',
-                    cursor: 'pointer',
+                    position: "absolute",
+                    top: "50%",
+                    right: "10px",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
                   }}
                 >
                   {showPassword ? <LockOpenIcon /> : <LockIcon />}
                 </div>
               </div>
 
-            
               <Button
                 type="submit"
                 fullWidth

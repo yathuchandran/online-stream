@@ -24,7 +24,7 @@ const MovieDetails = styled(Box)({
   textAlign: "left",
 });
 
-const EditButton = styled(Button)({
+const StyledButton = styled(Button)({
   backgroundColor: "transparent",
   color: "#ffffff",
   border: "1px solid #ffffff",
@@ -125,6 +125,10 @@ const MoviePage = () => {
     }
   };
 
+  const handleBackClick = () => {
+    navigate("/");
+  };
+
   return (
     <Box>
       <Banner style={{ backgroundImage: `url(${movie?.image})` }}>
@@ -165,11 +169,12 @@ const MoviePage = () => {
           </Grid>
         </Grid>
 
-        {/* Edit Button */}
-        <EditButton onClick={handleEditClick}>Edit Movie</EditButton>
-
-        {/* Watch Button */}
-        <EditButton onClick={handleWatchClick}>Watch Movie</EditButton>
+        {/* Buttons Section */}
+        <Box mt={3} display="flex" gap={2}>
+          <StyledButton onClick={handleBackClick}>Back</StyledButton>
+          <StyledButton onClick={handleEditClick}>Edit Movie</StyledButton>
+          <StyledButton onClick={handleWatchClick}>Watch Movie</StyledButton>
+        </Box>
 
         {videoId && (
           <Box mt={2}>

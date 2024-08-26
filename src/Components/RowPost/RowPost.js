@@ -26,7 +26,6 @@ function RowPost(props) {
       try {
         const res = await GetAllMovies();
         setAllMovies(res);
-        
       } catch (error) {
         console.log(error);
       }
@@ -60,8 +59,7 @@ function RowPost(props) {
 
   return (
     <div className="row">
-
-      <NavBar  setAllMovies={setAllMovies} />
+      <NavBar setAllMovies={setAllMovies} />
       <Banner />
       <h2>{props.title}</h2>
       <div className="posters">

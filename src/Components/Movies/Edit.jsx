@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { blue, grey } from "@mui/material/colors";
+import Swal from "sweetalert2";
 import { EditMovies, get_category, GetSingleMovie } from "../../Api/Api";
 
 const theme = createTheme({
@@ -40,12 +41,11 @@ const Editmovie = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [movieRating, setMovieRating] = useState("");
   const [director, setDirector] = useState("");
-  const [genre, setGenre] = useState(""); // Initialize as an array
-  const [actor, setActor] = useState(""); // Initialize as an array
+  const [genre, setGenre] = useState(""); 
+  const [actor, setActor] = useState(""); 
 
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
-  const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
 
   const [category, setCategory] = useState([]);
@@ -64,9 +64,9 @@ const Editmovie = () => {
         if (res) {
           setMovieTitle(res.title || "");
           setMovieRating(res.rating || "");
-          setDirector(res.Directors?.[0]?.id || ""); // Assuming one director
-          setGenre(res.Genres?.[0]?.id || ""); // Get array of genre IDs
-          setActor(res.Actors?.[0]?.id || ""); // Get array of actor IDs
+          setDirector(res.Directors?.[0]?.id || ""); 
+          setGenre(res.Genres?.[0]?.id || ""); 
+          setActor(res.Actors?.[0]?.id || ""); 
           setDescription(res.description || "");
         }
       } catch (error) {
@@ -111,11 +111,22 @@ const Editmovie = () => {
   
       const res = await EditMovies(formData, id);
   
-      setMessage("Movie updated successfully!");
-      navigate(`/viewMovie/${id}`);
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Movie updated successfully!",
+      }).then(() => {
+        navigate(`/viewMovie/${id}`);
+      });
     } catch (error) {
       console.error("Error updating movie:", error);
-      setMessage("Error updating movie: " + error.message);
+      // Show error alert
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error updating movie: " + error.message,
+      });
     } finally {
       setLoader(false);
     }
@@ -124,18 +135,18 @@ const Editmovie = () => {
   return (
     <ThemeProvider theme={theme}>
       <Grid
-      container
-      component="main"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      sx={{
-        backgroundImage: 'url("https://wallpapercave.com/wp/wp9424696.jpg")', // Replace with your image URL
-        backgroundSize: "cover", // Cover the entire container
-        backgroundPosition: "center", // Center the image
-        backgroundRepeat: "no-repeat", // Do not repeat the image
-      }}
-    >
+        container
+        component="main"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        sx={{
+          backgroundImage: 'url("https://wallpapercave.com/wp/wp9424696.jpg")', 
+          backgroundSize: "cover", 
+          backgroundPosition: "center", 
+          backgroundRepeat: "no-repeat", 
+        }}
+      >
         <Grid
           item
           xs={12}
@@ -301,7 +312,6 @@ const Editmovie = () => {
                 Upload Image
                 <input
                   type="file"
-                  accept="image/*"
                   hidden
                   onChange={handleImageChange}
                 />
@@ -312,14 +322,17 @@ const Editmovie = () => {
                 variant="contained"
                 color="primary"
                 disabled={loader}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  padding: "10px",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
               >
                 {loader ? "Updating..." : "Update Movie"}
               </Button>
-              {message && (
-                <Typography variant="body2" color="error" align="center" mt={2}>
-                  {message}
-                </Typography>
-              )}
             </Box>
           </Box>
         </Grid>

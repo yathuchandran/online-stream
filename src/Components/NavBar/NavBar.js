@@ -69,6 +69,7 @@ const [search,setSeach]=useState("")
           placeholder="Search..."
           onChange={(e)=>setSeach(e.target.value) } 
           sx={{
+            // width: "160px", // Reduced width
             input: { color: "#fff", height: "2.5rem" }, // Set the text color inside the search field
             fieldset: { borderColor: "rgba(255, 255, 255, 0.5)" }, // Set border color
             "& .MuiOutlinedInput-root": {
@@ -104,29 +105,32 @@ const [search,setSeach]=useState("")
       </Box>
 
       <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-        <Tooltip title="Open settings">
+        {/* <Tooltip title="Open settings">
           <IconButton sx={{ p: 0 }}>
             <Stack direction="row" spacing={2}  alignItems="center">
               <Avatar>{LoginName}</Avatar>
             </Stack>
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
 
         {/* Logout Button */}
-        <Button
-          variant="text"
-          sx={{
-            color: "#fff",
-            backgroundColor: "transparent",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.1)", // Add slight hover effect
-            },
-            marginLeft: 2,
-          }}
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        {LoginName && (
+  <Button
+    variant="text"
+    sx={{
+      color: "#fff",
+      backgroundColor: "transparent",
+      "&:hover": {
+        backgroundColor: "rgba(255, 255, 255, 0.1)", // Add slight hover effect
+      },
+      marginLeft: 2,
+    }}
+    onClick={handleLogout}
+  >
+    Logout
+  </Button>
+)}
+
       </Box>
     </div>
   );

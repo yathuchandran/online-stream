@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+
 import {
   Button,
   FormControl,
@@ -82,7 +84,7 @@ const Addmovie = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     // Validate form fields
     setTitleError(!movieTitle);
     setRatingError(!movieRating);
@@ -91,7 +93,7 @@ const Addmovie = () => {
     setActorError(!actor);
     setDescriptionError(!description);
     setImageError(!image);
-
+  
     if (
       !movieTitle ||
       !movieRating ||
@@ -102,7 +104,7 @@ const Addmovie = () => {
       !image
     )
       return;
-
+  
     try {
       handleLoaderOpen();
       const data = {
@@ -113,6 +115,7 @@ const Addmovie = () => {
         director_id: director,
         actor_id: actor,
       };
+      console.log(data,"----------------------------------------------");
       const formData = new FormData();
       formData.append("file", image);
       formData.append("title", movieTitle);
@@ -121,18 +124,32 @@ const Addmovie = () => {
       formData.append("genres_id", genre);
       formData.append("director_id", director);
       formData.append("actor_id", actor);
-
-      console.log(image,);
+  
       const res = await uploadSingle(formData);
-      navigate("/")
-      setMessage("Movie added successfully!");
+      console.log(res);
+  if (res==='') {
+    
+  }
+      Swal.fire({
+        icon: 'success',
+        title: 'Movie added successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
+  
+      navigate("/");
     } catch (error) {
       console.error("Error adding movie", error.message);
-      setMessage(error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      });
     } finally {
       handleLoaderClose();
     }
   };
+  
 
   const handleLoaderClose = () => setLoader(false);
   const handleLoaderOpen = () => setLoader(true);

@@ -40,6 +40,7 @@ export const getLogin = async (payload) => {
 
 
   export const uploadSingle = async (payload) => {
+    console.log(payload,"payload");
     try {
       const response = await axios.post(`${baseUrlApi}/movie/add`,payload);
       return response?.data;
@@ -68,7 +69,6 @@ export const getLogin = async (payload) => {
   };
 
   export const keySerch = async (search) => {
-    console.log(search,"=================================================================");
     try {
       const response = await axios.get(`${baseUrlApi}/movie/get_searchmovie?keyword=${search} `);
       return response?.data;
